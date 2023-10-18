@@ -5,5 +5,5 @@ python-socketio==5.10.0
 simple-websocket==1.0.0
 websocket==0.2.1
 websockets==11.0.3
-eventlet==0.30.4
+eventlet
 waitress
