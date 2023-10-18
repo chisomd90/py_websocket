@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>WebSocket Test</h1>
+    <div id="status"></div>
+    <div id="messages"></div>
+    <p id="gameID"></p> <!-- Add this line to display the game ID -->
+    <input type="text" id="message-input" placeholder="Type a message">
+    <button id="send-button">Send</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        // Replace with the URL of your Flask application and the correct namespace
+        const socket = io.connect('http://127.0.0.1:5000/game');  // Use the "/game" namespace
+
+        socket.on('connect', function () {
+        // Display the game ID when connected
+        const gameID = document.getElementById('gameID');
+        gameID.textContent = `Game ID: ${socket.io.engine.id}`;
+    });
+
+        socket.on('message', function (data) {
+            const message = document.createElement('p');
+            message.textContent = data;
+            document.getElementById('messages').appendChild(message);
+        });
+
+        socket.on('disconnect', function () {
+            document.getElementById('status').textContent = 'Disconnected from the WebSocket server';
+        });
+
+        // Example: Sending a message to the server
+        document.getElementById('send-button').addEventListener('click', function () {
+            const message = document.getElementById('message-input').value;
+            socket.emit('message', message);
+        });
+    </script>
+</body>
+</html>

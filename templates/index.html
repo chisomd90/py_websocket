@@ -1,0 +1,29 @@
+<h1>WebSocket Test</h1>
+<form id="game-form">
+    <label for="game-id">Enter Game ID: </label>
+    <input type="text" id="game-id" name="game_id" placeholder="Game ID">
+    <button type="submit">Connect</button>
+</form>
+<div id="status"></div>
+<div id="messages"></div>
+<script>
+    const socket = io.connect('http://127.0.0.1:5000/game');
+
+    // Handle the form submission
+    document.getElementById('game-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const gameID = document.getElementById('game-id').value;
+
+        // Connect to the WebSocket with the specified game ID
+        socket.io.opts.query = `game_id=${gameID}`;
+        socket.connect();
+
+        // Display the game ID when connected
+        socket.on('connect', function () {
+            const gameID = document.getElementById('gameID');
+            gameID.textContent = `Game ID: ${socket.io.engine.id}`;
+        });
+    });
+
+    // ...rest of your WebSocket logic
+</script>
